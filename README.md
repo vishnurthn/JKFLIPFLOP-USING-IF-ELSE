@@ -40,19 +40,21 @@ The maximum possible groupings of adjacent ones are already shown in the figure.
 
 **PROGRAM**
 
-    module program7(j,k,clk,q,qbar);
-    input j,k,clk;
-    output reg q,qbar;
-    initial 
-    begin
-    q=1'b0;
-    q=1'b1;
-    end 
+    module jk(j, k, clk, rst, q);
+    input j, k, clk, rst;
+    output reg q;
 
-    always @(posedge clk)
-    begin 
-    q<=(j&~q)|(~k&q);
-    qbar<=~q;
+    always @(posedge clk or posedge rst) begin
+    if (rst)
+      q <= 0;
+    else if (j == 0 && k == 0)
+      q <= q;
+    else if (j == 0 && k == 1)
+      q <= 0;
+    else if (j == 1 && k == 0)
+      q <= 1;
+    else if (j == 1 && k == 1)
+      q <= ~q;
     end
     endmodule
 /* Program for flipflops and verify its truth table in quartus using Verilog programming. Developed by:yashwanth.asv RegisterNumber:24900018
